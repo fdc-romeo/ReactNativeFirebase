@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text,Image,ActivityIndicator} from 'react-native';
+import {StyleSheet, View, Text,Image,ActivityIndicator,SafeAreaView} from 'react-native';
 import { NavigationActions } from "react-navigation";
-import { LoginComponent } from './/LoadingPage';
+import { LoginScreen } from './/LoginPage';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 const styles = StyleSheet.create({
   MainView: {
@@ -18,20 +19,19 @@ const styles = StyleSheet.create({
   }
 });
 
-function ImportComponent( {navigation}, props ){
-      setTimeout(() => {
-       navigation.navigate('LoginComponent');
-     }, 2500);
+function LoadingPage({ navigation }) {
     return (
-        <View style={styles.MainView}>
-          <Image
-            source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
-            style={{width: 200, height: 200}}
-          />
-           <Text>Hello, I am your cat!</Text> 
-           <ActivityIndicator style={styles.Indicator} size="large" color="#0000ff" />
-        </View>
-    )
+       <SafeAreaView style={{flex: 1}}>
+          <View style={styles.MainView}>
+            <Image
+              source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
+              style={{width: 200, height: 200}}
+            />
+             <Text>Welcome To Cat Café</Text> 
+             <ActivityIndicator style={styles.Indicator} size="large" color="#0000ff" />
+          </View>
+        </SafeAreaView>
+  );
 }
 
-export { ImportComponent }
+export { LoadingPage }
