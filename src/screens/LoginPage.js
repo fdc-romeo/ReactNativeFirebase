@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component , useState,} from 'react';
 import {
   StyleSheet, 
   View, 
@@ -7,13 +7,17 @@ import {
   ActivityIndicator,
   SafeAreaView,
   TextInput,
-  Button
+  Button,
+  Alert,
+  Linking
 } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { realtimeDb } from '../config/db';
 
+import { ListItem }  from '../screens1/ListItem';
 
 const styles = StyleSheet.create({
 
@@ -22,12 +26,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  Indicator : {
-    marginTop : 5
-
-  },
-
   UserName  : {
     height: 40,
     width : 200,
@@ -54,39 +52,88 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 
+  Text : {
+     // color: 'blue'
+  },
+  listCats : {
+   marginTop : 10
+  }
+
 });
 
+function addItem (data) {
+
+    var name = data.name;
+    var color = data.color;
+  
+    if (name !="" && color !="") {
+       realtimeDb.ref('/Meow').push({
+          name: data.name,
+          color : data.color
+       });
+    }
+    setTimeout(() => {
+          Alert.alert( "Sucessfully Save!");
+    }, 2000);
+  
+    return (
+
+      <ActivityIndicator style={styles.Indicator} size="large" color="#0000ff" />
+    );
+   
+}
+
 function LoginPage ({ navigation }) {
+    const [nameCat,setCat ] = useState('');
+    const [colorCat, setColor] = useState('');
+    const  data = {
+         name :  nameCat,
+         color:  colorCat
+    };
+
+
+    const clearInput = () => {
+       setCat('');
+       setColor('');
+    }
+
     return (
        <SafeAreaView style={{flex: 1}}>
-        <View style={styles.MainView}>
-          <Image
-              source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
-              style={styles.ImageLogo}
-            />
-            <Text>Please Login</Text>
+              <View style={styles.MainView}>
+                <Image
+                    source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
+                    style={styles.ImageLogo}
+                  />
+                  <Text style={styles.Text}>Please Add Your Cat Name</Text>
 
-           <TextInput
-              style={styles.UserName}
-               placeholder="User Name" >
-           </TextInput> 
+                  <TextInput
+                      style={styles.UserName}
+                      placeholder="Name" 
+                      autoCorrect={false}
+                      onChangeText={newCat => setCat(newCat)}
+                      value={nameCat}
+                     >
+                  </TextInput> 
 
-         <TextInput style={styles.Password}
-              placeholder="Password"
-              placeholderTextColor="#9a73ef"
-              returnKeyType='go'
-              secureTextEntry
-              autoCorrect={false}
-          />
+                  <TextInput style={styles.Password}
+                       placeholder="Color"
+                       onChangeText={newColor => setColor(newColor)}
+                       autoCorrect={false}
+                       value={colorCat}
+                     >
+                  </TextInput> 
+                  <Button
+                      style={styles.BtnLogin}
+                      title="Submit"
+                      onPress={() => {addItem(data) ,clearInput()} }>
+                  </Button>
 
-            <Button
-              style={styles.BtnLogin}
-              title="Login"
-              type ="password"
-              onPress={() => alert('Simple Button pressed')}>
-            </Button>
-        </View>
 
+                    <Text style={styles.listCats}
+                         onPress={() =>   navigation.navigate('ListItem')    }>
+                        See All Cats
+                  </Text>
+              </View>
        </SafeAreaView>  
     )
 }
