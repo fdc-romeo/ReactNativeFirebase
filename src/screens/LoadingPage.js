@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 });
 
 function LoadingPage({ navigation }) {
+  
     return (
        <SafeAreaView style={{flex: 1}}>
           <View style={styles.MainView}>

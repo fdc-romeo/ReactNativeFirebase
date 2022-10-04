@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function ListItem({ navigation }) {
+function ListItemPage ({ navigation }) {
     return (
        <SafeAreaView style={{flex: 1}}>
           <View style={styles.MainView}>
@@ -32,4 +32,4 @@ function ListItem({ navigation }) {
   );
 }
 
-export { ListItem }
+export { ListItemPage }
